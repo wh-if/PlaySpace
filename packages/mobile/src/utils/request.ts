@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 
 const service: AxiosInstance = axios.create({
+  baseURL:'/api',
   timeout: 5000,
 });
 

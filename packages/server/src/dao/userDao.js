@@ -2,8 +2,9 @@ const { select, insert, update, remove } = require("./index");
 
 class UserDao {
   TABLE_NAME = 'user';
-  getUser = (whereValues) => {
-    return select(this.TABLE_NAME, whereValues);
+  getUser = async (whereValues, one = true) => {
+    const results = await select(this.TABLE_NAME, whereValues);
+    return one ? results[0] : results;
   };
   updateUser = (updateValues, whereValues) => {
     return update(this.TABLE_NAME, updateValues, whereValues);

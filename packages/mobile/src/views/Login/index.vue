@@ -34,12 +34,14 @@
 </template>
 
 <script setup lang="ts">
+import { login, register } from '@/api/user';
 import { ref } from 'vue'
 const username = ref('')
 const password = ref('')
 const onSubmit = (values: any) => {
   console.log('submit', values)
 }
+register({accountNumber:1, password:'1'})
 </script>
 
 <style lang="scss" scoped>
