@@ -1,0 +1,22 @@
+{
+  "name": "vshop",
+  "version": "0.0.1",
+  "description": "",
+  "packageManager": "pnpm@7.26.3",
+  "scripts": {
+    "server": "npm run dev --workspace=server",
+    "admin": "npm run dev --workspace=admin",
+    "mobile": "npm run dev --workspace=mobile",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "packages\\mobile",
+    "packages\\admin",
+    "packages\\server"
+  ],
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  }
+}
