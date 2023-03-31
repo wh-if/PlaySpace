@@ -1,7 +1,7 @@
 const { HttpMethodEnum, koaBody } = require("koa-body");
 const path = require('path');
 const AjaxResult = require("../util/AjaxResult");
-
+const send = require('koa-send')
 module.exports = [
   // 需要访问权限
   {
@@ -39,6 +39,19 @@ module.exports = [
         // console.log(ctx.request.files);
         ctx.body = AjaxResult.success();
       }
+    ]
+  },
+  // 静态资源
+  {
+    path: '/static/:id',
+    method: HttpMethodEnum.GET,
+    handler: [
+      async (ctx, next) => {
+        const srcPath = '/' + ctx.params.id;
+        const opts = { root: path.join(__dirname, "../public") }
+        await send(ctx, srcPath, opts);
+        next();
+      },
     ]
   }
 ]

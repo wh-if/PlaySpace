@@ -5,10 +5,14 @@
       :autoplay="3000"
       indicator-color="white"
     >
-      <VanSwipeItem>1</VanSwipeItem>
-      <VanSwipeItem>2</VanSwipeItem>
-      <VanSwipeItem>3</VanSwipeItem>
-      <VanSwipeItem>4</VanSwipeItem>
+      <VanSwipeItem
+        v-for="item in state.bannerList"
+        :key="item.id"
+      >
+        <a :href="item.bannerUrl" class="banner"> 
+          <img :src="item.bannerPic" :alt="item.bannerTitle">
+        </a>
+      </VanSwipeItem>
     </VanSwipe>
     <VanGrid :column-num="3">
       <VanGridItem
@@ -22,16 +26,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { getBannerList } from '@/api/systemConfig'
+import { ref, shallowReactive } from 'vue'
+
+type StateType = {
+  bannerList: Record<string,any>[]
+}
+
+const state = shallowReactive<StateType>({
+  bannerList: [],
+})
+
+getBannerList().then((res) => {
+  state.bannerList = res.data
+})
 const currentTab = ref(1)
 </script>
 
 <style lang="scss" scoped>
-.my-swipe .van-swipe-item {
-  color: #fff;
-  font-size: 20px;
-  line-height: 150px;
-  text-align: center;
-  background-color: #39a9ed;
+// .my-swipe .van-swipe-item {
+//   color: #fff;
+//   font-size: 20px;
+//   line-height: 150px;
+//   text-align: center;
+//   background-color: #39a9ed;
+// }
+
+.banner{
+  img{
+    width: 100%;
+  }
 }
 </style>

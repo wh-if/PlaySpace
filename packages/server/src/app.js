@@ -1,11 +1,11 @@
 const Koa = require("koa");
-const koaStatic = require("koa-static");
+// const koaStatic = require("koa-static");
 const { koaBody } = require("koa-body");
 const router = require("./controller/router");
 const app = new Koa();
 
 app.use(koaBody());
-app.use(koaStatic(__dirname + '/public'));
+// app.use(koaStatic(__dirname + '/public'));
 app.use(router.routes());
 app.use(router.allowedMethods());
 

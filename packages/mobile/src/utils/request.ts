@@ -3,36 +3,46 @@ import axios, {
   AxiosError,
   AxiosResponse,
   AxiosRequestConfig,
-} from "axios";
+} from 'axios'
+import { showFailToast } from 'vant'
+
+type AjaxResult = {
+  message: string
+  code: 200 | 404
+  data: Record<string, any>
+} & AxiosResponse
 
 const service: AxiosInstance = axios.create({
-  baseURL:'/api',
+  baseURL: '/api',
   timeout: 5000,
-});
+})
 
 service.interceptors.request.use(
   (config) => {
-    return config;
+    return config
   },
   (error: AxiosError) => {
     // console.log(error);
-    return Promise.reject();
+    return Promise.reject()
   }
-);
+)
 
 service.interceptors.response.use(
   (response) => {
-    return response;
-    // if (response.status === 200) {
-    //   return Promise.resolve(response);
-    // } else {
-    //   Promise.reject();
-    // }
+    if (response.status === 200) {
+      const result: AjaxResult = response.data
+      if (result.code === 404) {
+        showFailToast(result.message)
+      }
+      return result
+    } else {
+      return response
+    }
   },
   (error: AxiosError) => {
-    console.log(error);
-    return Promise.reject();
+    console.log(error)
+    return Promise.reject()
   }
-);
+)
 
-export default service;
+export default service
