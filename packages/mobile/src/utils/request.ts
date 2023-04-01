@@ -8,7 +8,7 @@ import { showFailToast } from 'vant'
 
 type AjaxResult = {
   message: string
-  code: 200 | 404
+  code: 0 | 1
   data: Record<string, any>
 } & AxiosResponse
 
@@ -31,7 +31,7 @@ service.interceptors.response.use(
   (response) => {
     if (response.status === 200) {
       const result: AjaxResult = response.data
-      if (result.code === 404) {
+      if (result.code === 1) {
         showFailToast(result.message)
       }
       return result

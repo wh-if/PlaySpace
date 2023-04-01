@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "nodemon src/app.js --watch src",
+    "gen": "node src/generateData.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

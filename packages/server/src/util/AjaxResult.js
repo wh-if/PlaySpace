@@ -1,3 +1,8 @@
+
+/**
+ * 0 成功
+ * 1 失败
+ *  */ 
 class AjaxResult {
   constructor(code, message, data) {
     this.code = code;
@@ -7,12 +12,12 @@ class AjaxResult {
   static success(arg_1, arg_2) {
     if (typeof arg_1 === "object") {
       arg_2 = arg_1;
-      arg_1 = "操作成功！";
+      arg_1 = "成功";
     }
-    return JSON.stringify(new AjaxResult(200, arg_1, arg_2));
+    return JSON.stringify(new AjaxResult(0, arg_1, arg_2));
   };
-  static error(message = "操作失败！") {
-    return JSON.stringify(new AjaxResult(404, message, null));
+  static error(message = "失败") {
+    return JSON.stringify(new AjaxResult(1, message, null));
   }
 }
 
