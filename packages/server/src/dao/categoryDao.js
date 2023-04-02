@@ -1,7 +1,7 @@
 const { select, insert, update, remove } = require("./index");
 
-class UserDao {
-  TABLE_NAME = 'user';
+class CategoryDao {
+  TABLE_NAME = 'category';
   get = async (whereValues, one = true) => {
     const results = await select(this.TABLE_NAME, whereValues);
     return one ? results[0] : results;
@@ -16,5 +16,4 @@ class UserDao {
     return remove(this.TABLE_NAME, whereValues)
   };
 }
-module.exports = new UserDao();
-// update('user',{id:2,name:'fafa',accountNumber:'1232333',email:'1',password:'123'},{id:2})
+module.exports = new CategoryDao();

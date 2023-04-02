@@ -1,5 +1,5 @@
 const { HttpMethodEnum: { GET, POST } } = require("koa-body");
-const { getUser } = require("../dao/userDao");
+const { get } = require("../dao/userDao");
 const AjaxResult = require("../util/AjaxResult");
 
 module.exports = [
@@ -8,7 +8,7 @@ module.exports = [
     path: "/user",
     method: GET,
     handler: async (ctx) => {
-      ctx.body = await getUser({ id: 1 });
+      ctx.body = await get({ id: 1 });
     },
   },
   // 登录
@@ -17,7 +17,7 @@ module.exports = [
     method: POST,
     handler: async (ctx) => {
       const { accountNumber, password } = ctx.request.body;
-      const user = await getUser({ accountNumber });
+      const user = await get({ accountNumber });
       if (password === user.password) {
         ctx.body = AjaxResult.success("登录成功！", null)
       } else {

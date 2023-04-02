@@ -1,12 +1,18 @@
 const { select, insert, update, remove } = require("./index");
 
-class UserDao {
-  TABLE_NAME = 'user';
+class ProductDao {
+  TABLE_NAME = 'product';
   get = async (whereValues, one = true) => {
     const results = await select(this.TABLE_NAME, whereValues);
+    results.forEach(item => {
+      item.tag = JSON.parse(item.tag);
+      item.content = JSON.parse(item.content);
+      item.poster = JSON.parse(item.poster);
+      item.buyOptions = JSON.parse(item.buyOptions);
+    })
     return one ? results[0] : results;
   };
-  update = (updateValues, whereValues) => {
+  update = (updateValues) => {
     return update(this.TABLE_NAME, updateValues, whereValues);
   };
   add = (objData) => {
@@ -16,5 +22,4 @@ class UserDao {
     return remove(this.TABLE_NAME, whereValues)
   };
 }
-module.exports = new UserDao();
-// update('user',{id:2,name:'fafa',accountNumber:'1232333',email:'1',password:'123'},{id:2})
+module.exports = new ProductDao();
