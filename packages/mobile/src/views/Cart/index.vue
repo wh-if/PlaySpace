@@ -14,11 +14,14 @@
           style="width: 20px"
         ></VanCheckbox>
         <div class="item-info">
-          <img
-            :src="item.productPicture"
-            width="100"
-            :alt="item.productName"
-          />
+          <div class="img-box">
+            <img
+              :src="item.productPicture"
+              width="90"
+              :alt="item.productName"
+            />
+          </div>
+
           <div>
             <p>{{ item.productName }}</p>
             <p>{{ item.buyOptions[item.activeOption].optionName }}</p>
@@ -75,8 +78,9 @@ watch(
         targetProduct.buyOptions[targetProduct.activeOption].discountPrice *
         targetProduct.buyCount)
     }, 0)
-  }, {
-    immediate:true
+  },
+  {
+    immediate: true,
   }
 )
 
@@ -95,6 +99,12 @@ function onSubmit() {
     display: flex;
     flex: 1;
     position: relative;
+
+    .img-box {
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      margin: 0 10px;
+    }
 
     p {
       padding-top: 6px;
