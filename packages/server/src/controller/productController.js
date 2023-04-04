@@ -11,14 +11,14 @@ module.exports = [
     handler: async (ctx) => {
       const { categoryId, productId } = ctx.query;
       if (!!productId) {
-        ctx.body = await productDao.get({ id: productId });
+        ctx.body = AjaxResult.success(await productDao.get({ id: productId })) ;
         return;
       }
       let queryValues = {};
       if (!!categoryId) {
         queryValues.categoryId = categoryId;
       }
-      ctx.body = await productDao.get({ categoryId }, false);
+      ctx.body = AjaxResult.success(await productDao.get({ categoryId }, false));
 
     },
   },
@@ -26,7 +26,7 @@ module.exports = [
     path: "/product/:id",
     method: GET,
     handler: async (ctx) => {
-      ctx.body = await productDao.get({ id: ctx.params.id }, false);
+      ctx.body = AjaxResult.success(await productDao.get({ id: ctx.params.id }, false));
     },
   },
   // 登录

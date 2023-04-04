@@ -14,10 +14,10 @@ class AjaxResult {
       arg_2 = arg_1;
       arg_1 = "成功";
     }
-    return JSON.stringify(new AjaxResult(0, arg_1, arg_2));
+    return new AjaxResult(0, arg_1, arg_2);
   };
   static error(message = "失败") {
-    return JSON.stringify(new AjaxResult(1, message, null));
+    return new AjaxResult(1, message, null);
   }
 }
 

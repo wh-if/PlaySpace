@@ -31,7 +31,7 @@ function genProduct() {
     obj.name = h[x]+' '+ cArray[a]+number +' '+ss[b];
     obj.categoryId = a;
     obj.description = "120W 超快闪充 · 等效 5000mAh* 长寿大电池 · 骁龙 782G · 3K 大面积 VC 散热 · 七重护眼竞速屏";
-    obj.tag = JSON.stringify(["新品"]) ;
+    obj.tag = JSON.stringify({new:true,hot:false,wellChoice: false}) ;
     obj.stock = 100;
     obj.buyOptions = JSON.stringify([
       {
@@ -54,7 +54,7 @@ function genProduct() {
         price: a * 300 + number * 3,
         discountPrice: a * 300 + number * 3 - 150,
       },
-    ]) ;
+    ]);
     obj.content =JSON.stringify([
       "http://localhost:8080/static/product_content_1_1.webp",
       "http://localhost:8080/static/product_content_1_2.webp",
