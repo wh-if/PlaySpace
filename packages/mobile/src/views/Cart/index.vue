@@ -23,8 +23,8 @@
           </div>
 
           <div>
-            <p>{{ item.productName }}</p>
-            <p>{{ item.buyOptions[item.activeOption].optionName }}</p>
+            <h4>{{ item.productName }}</h4>
+            <p style="font-size: 14px;color:gray">{{ item.buyOptions[item.activeOption].optionName }}</p>
             <p style="color: red; font-size: larger; padding-top: 16px">
               ￥ {{ item.buyOptions[item.activeOption].discountPrice }}
             </p>
@@ -108,12 +108,11 @@ function onSubmit() {
 
     p {
       padding-top: 6px;
-      font-size: 15px;
     }
     .buy-count-box {
       position: absolute;
       right: 8px;
-      bottom: 0;
+      bottom: 5px;
     }
   }
 }

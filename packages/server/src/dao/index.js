@@ -12,10 +12,10 @@ exports.query = pool.query.bind(pool);
 
 exports.select = (tableName, whereValues) => {
   return new Promise((resolve, reject) => {
-    let sql = warpWhere(`select * from ${tableName}`, whereValues);
+    let sql = warpWhere(`select * from \`${tableName}\``, whereValues);
     console.warn(sql);
     pool.query(sql, function (error, results, fields) {
-      if (error) throw error;
+      if (error) throw error; 
       resolve(results);
     });
   })
@@ -23,7 +23,7 @@ exports.select = (tableName, whereValues) => {
 
 exports.insert = (tableName, obj) => {
   return new Promise((resolve, reject) => {
-    pool.query(`insert into ${tableName} set ?`, obj, function (error, results, fields) {
+    pool.query(`insert into \`${tableName}\` set ?`, obj, function (error, results, fields) {
       if (error) throw error;
       resolve(results.insertId);
     });
@@ -32,7 +32,7 @@ exports.insert = (tableName, obj) => {
 
 exports.update = (tableName, updateValues, whereValues) => {
   return new Promise((resolve, reject) => {
-    let sqlBuilder = `update ${tableName} set `;
+    let sqlBuilder = `update \`${tableName}\` set `;
     for (const key in updateValues) {
       if (Object.hasOwnProperty.call(updateValues, key)) {
         sqlBuilder += `${'`' + key + '`'}=${ mysql.escape(updateValues[key])},`;
@@ -51,7 +51,7 @@ exports.update = (tableName, updateValues, whereValues) => {
 
 exports.remove = (tableName, whereValues) => {
   return new Promise((resolve, reject) => {
-    let sql = warpWhere(`delete from ${tableName}`, whereValues);
+    let sql = warpWhere(`delete from \`${tableName}\``, whereValues);
     console.warn(sql);
     pool.query(sql, function (error, results, fields) {
       if (error) throw error;

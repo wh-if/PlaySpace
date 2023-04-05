@@ -1,16 +1,20 @@
-const { select, insert, update, remove } = require("./index");
+const { select, insert, update, remove, query } = require("./index");
 
 class OrderItemDao {
-  TABLE_NAME = 'order-item';
+  TABLE_NAME = 'order_item';
   get = async (whereValues, one = true) => {
-    const results = await select(this.TABLE_NAME, whereValues);
-    // results.forEach(item => {
-    //   item.tag = JSON.parse(item.tag);
-    //   item.content = JSON.parse(item.content);
-    //   item.poster = JSON.parse(item.poster);
-    //   item.buyOptions = JSON.parse(item.buyOptions);
-    // })
-    return one ? results[0] : results;
+    // const results = await select(this.TABLE_NAME, whereValues);
+    return new Promise((resolve, reject) => {
+      query(`select \`${this.TABLE_NAME}\`.id as id, productId, activeOption, buyCount, buyOptions, poster, \`name\` as productName from \`${this.TABLE_NAME}\`, product where orderId = ${whereValues.orderId} and product.id = productId
+    `, (error, result, field) => {
+        if (error) throw error;
+        result.forEach(item => {
+          item.poster = JSON.parse(item.poster);
+          item.buyOptions = JSON.parse(item.buyOptions);
+        })
+        resolve(result);
+      })
+    })
   };
   update = (updateValues, whereValues) => {
     return update(this.TABLE_NAME, updateValues, whereValues);

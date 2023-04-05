@@ -9,7 +9,7 @@ class AjaxResult {
     this.message = message;
     this.data = data;
   };
-  static success(arg_1, arg_2) {
+  static success(arg_1 = "成功", arg_2) {
     if (typeof arg_1 === "object") {
       arg_2 = arg_1;
       arg_1 = "成功";

@@ -40,7 +40,7 @@ module.exports = [
     method: GET,
     handler: async (ctx) => {
       const { userId } = ctx.query;
-      const resultList = await addressDao.get({ userId });
+      const resultList = await addressDao.get({ userId },false);
       ctx.body = AjaxResult.success(resultList);
     },
   },

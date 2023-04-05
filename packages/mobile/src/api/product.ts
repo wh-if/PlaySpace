@@ -1,18 +1,16 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 type GetProductProps = {
-  categoryId?: number,
+  categoryId?: number
   productId?: number
 }
 
-export function getProduct(params: GetProductProps={}) {
-
+export function getProduct(params: GetProductProps = {}) {
   return request({
     url: '/product',
     method: 'get',
     params,
   })
-  
 }
 
 export function getCategory() {
@@ -20,5 +18,4 @@ export function getCategory() {
     url: '/category',
     method: 'get',
   })
-  
 }

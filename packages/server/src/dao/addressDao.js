@@ -4,15 +4,15 @@ class AddressDao {
   TABLE_NAME = 'address';
   get = async (whereValues, one = true) => {
     const results = await select(this.TABLE_NAME, whereValues);
-    // results.forEach(item => {
-    //   item.tag = JSON.parse(item.tag);
-    //   item.content = JSON.parse(item.content);
-    //   item.poster = JSON.parse(item.poster);
-    //   item.buyOptions = JSON.parse(item.buyOptions);
-    // })
+    results.forEach(item => {
+      item.isDefault = Boolean(parseInt(item.isDefault))
+    })
     return one ? results[0] : results;
   };
   update = (updateValues, whereValues) => {
+    if (updateValues.isDefault) {
+      update(this.TABLE_NAME, { isDefault: false }, { isDefault: '1' });
+    }
     return update(this.TABLE_NAME, updateValues, whereValues);
   };
   add = (objData) => {
