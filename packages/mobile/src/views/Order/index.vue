@@ -1,16 +1,26 @@
 <template>
   <div class="main-box">
-    <div v-if="!isCreatePage" class="order-info">
+    <div
+      v-if="!isCreatePage"
+      class="order-info"
+    >
       <p>订单状态：{{ orderData?.status == 0 ? '待支付' : '配送中' }}</p>
       <p>订单编号：{{ orderData?.orderNumber }}</p>
-      <p>下单时间：{{( new Date(parseInt(orderData?.createTime) )).toLocaleString()  }}</p>
+      <p>
+        下单时间：{{
+          new Date(parseInt(orderData?.createTime)).toLocaleString()
+        }}
+      </p>
     </div>
-    <AddressCard ref="addressCardRef" :address-id="orderData?.addressId" />
+    <AddressCard
+      ref="addressCardRef"
+      :address-id="orderData?.addressId"
+    />
     <div class="product-list">
       <div
-        class="product-item"
-        v-for="(item, index) in productList"
+        v-for="item in productList"
         :key="item.productId"
+        class="product-item"
       >
         <div class="img-box">
           <img
@@ -33,9 +43,9 @@
       </div>
     </div>
     <van-submit-bar
-      v-if="isCreatePage"
       :price="totalPrice * 100"
-      button-text="提交订单"
+      :button-type="submitBarState.buttonType"
+      :button-text="submitBarState.buttonText"
       @submit="onSubmit"
     />
   </div>
@@ -45,9 +55,10 @@
 import { useMainStore } from '@/store/mainStore'
 import AddressCard from './components/AddressCard.vue'
 import { computed, ref } from 'vue'
-import { addOrder, getOrder } from '@/api/order'
+import { addOrder, getOrder, payOrder } from '@/api/order'
 import { useRouter } from 'vue-router'
 import { shallowRef } from 'vue'
+import { ButtonType, showToast } from 'vant'
 
 const mainStore = useMainStore()
 const addressCardRef = ref()
@@ -64,7 +75,7 @@ const productList = computed(() => {
       (item) => mainStore.$state.cartProductList[item]
     )
   } else {
-    return orderData.value?.productItems
+    return orderData.value?.productItems ?? []
   }
 })
 
@@ -76,20 +87,41 @@ const totalPrice = computed(() =>
   )
 )
 
-function onSubmit() {
-  addOrder({
-    addressId: addressCardRef.value.chosenAddressId,
-    productItems: productList.value,
-  }).then((res) => {
-    mainStore.$patch({
-      cartProductList: mainStore.cartProductList.filter(
-        (_, index) => !mainStore.cartProductChecked.includes(index)
-      ),
-      cartProductChecked: [],
-    })
+const submitBarState = computed(() => {
+  switch (orderData.value?.status) {
+    case '0':
+      return {
+        buttonText: '立即支付',
+        buttonType: 'success' as ButtonType,
+      }
+    default:
+      return {
+        buttonText: '提交订单',
+        buttonType: 'danger' as ButtonType,
+      }
+  }
+})
 
-    router.replace(`/order/${res.data.orderId}`)
-  })
+function onSubmit() {
+  if (!orderData.value?.status) {
+    addOrder({
+      addressId: addressCardRef.value.chosenAddressId,
+      productItems: productList.value,
+    }).then((res) => {
+      mainStore.$patch({
+        cartProductList: mainStore.cartProductList.filter(
+          (_, index) => !mainStore.cartProductChecked.includes(index)
+        ),
+        cartProductChecked: [],
+      })
+
+      router.replace(`/order/${res.data.orderId}`)
+    })
+  } else if(orderData.value.status == 0) {
+    payOrder(orderData.value.id).then(res => {
+      // showToast(res.message)
+    })
+  }
 }
 
 if (!isCreatePage.value) {
@@ -103,11 +135,11 @@ if (!isCreatePage.value) {
 .main-box {
   // padding: 10px 0;
 
-  .order-info{
+  .order-info {
     background-color: #fff;
     padding: 15px;
     margin-bottom: 15px;
-    p{
+    p {
       padding: 5px;
     }
   }

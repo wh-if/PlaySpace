@@ -38,3 +38,11 @@ export function deleteOrder(id: string) {
     method: 'delete',
   })
 }
+
+export function payOrder(id: string) {
+  return request({
+    url: `/order/pay/${id}`,
+    method: 'put',
+    data: { payFinish: true}
+  })
+}

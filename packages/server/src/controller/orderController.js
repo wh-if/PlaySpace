@@ -91,4 +91,18 @@ module.exports = [
       }
     },
   },
+  {
+    path: "/order/pay/:id",
+    method: PUT,
+    handler: async (ctx) => {
+      const { payFinish } = ctx.request.body;
+      if (payFinish) {
+        const result = await orderDao.update({ status: 1 }, { id: ctx.params.id });
+        ctx.body = AjaxResult.success();
+        return;
+      }
+      ctx.body = AjaxResult.error();
+
+    },
+  },
 ]

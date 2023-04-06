@@ -10,7 +10,7 @@ type AjaxResult = {
   message: string
   code: 0 | 1
   data: Record<string, any>
-} & AxiosResponse
+}& AxiosResponse
 
 const service: AxiosInstance = axios.create({
   baseURL: '/api',
