@@ -21,6 +21,11 @@ module.exports = [
         })
       } else {
         result = await orderDao.get({ userId }, false);
+        for (const iterator of result) {
+          const productItems = await orderItemDao.get({ orderId: iterator.id }, false);
+          iterator.productPictures = productItems.map(i => i.poster[0]);
+          iterator.totalPrice = productItems.reduce((pre, cur) => pre + cur.buyOptions[cur.activeOption].discountPrice * cur.buyCount, 0)
+        }
       }
 
       ctx.body = AjaxResult.success(result);
@@ -32,6 +37,7 @@ module.exports = [
     method: POST,
     handler: async (ctx) => {
       const { userId, addressId, productItems } = ctx.request.body;
+      // gen orderNumber  createTime status payTime
       const newOrder = {
         userId,
         addressId,
@@ -41,8 +47,7 @@ module.exports = [
       }
 
       const resultId = await orderDao.add(newOrder);
-      // console.log('???' + resultId);
-
+      // add orderitem
       productItems.forEach(async item => {
         const newOrderItem = {
           orderId: resultId,
@@ -52,9 +57,6 @@ module.exports = [
         }
         await orderItemDao.add(newOrderItem);
       })
-
-      // add orderitem
-      // gen orderNumber  createTime status payTime
 
 
       // if (result) {
@@ -97,7 +99,7 @@ module.exports = [
     handler: async (ctx) => {
       const { payFinish } = ctx.request.body;
       if (payFinish) {
-        const result = await orderDao.update({ status: 1 }, { id: ctx.params.id });
+        const result = await orderDao.update({ status: 1, payTime: Date.now() }, { id: ctx.params.id });
         ctx.body = AjaxResult.success();
         return;
       }

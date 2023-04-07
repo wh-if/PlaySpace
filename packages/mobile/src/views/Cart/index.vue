@@ -1,18 +1,18 @@
 <template>
   <div>
     <VanCheckboxGroup
-      v-model="mainStore.$state.cartProductChecked"
       ref="checkBoxRef"
+      v-model="mainStore.$state.cartProductChecked"
     >
       <div
-        class="product-item"
         v-for="(item, index) in mainStore.$state.cartProductList"
         :key="item.productId"
+        class="product-item"
       >
         <VanCheckbox
           :name="index"
           style="width: 20px"
-        ></VanCheckbox>
+        />
         <div class="item-info">
           <div class="img-box">
             <img
@@ -24,13 +24,15 @@
 
           <div>
             <h4>{{ item.productName }}</h4>
-            <p style="font-size: 14px;color:gray">{{ item.buyOptions[item.activeOption].optionName }}</p>
+            <p style="font-size: 14px; color: gray">
+              {{ item.buyOptions[item.activeOption].optionName }}
+            </p>
             <p style="color: red; font-size: larger; padding-top: 16px">
               ￥ {{ item.buyOptions[item.activeOption].discountPrice }}
             </p>
             <van-stepper
-              class="buy-count-box"
               v-model="item.buyCount"
+              class="buy-count-box"
               integer
             />
           </div>
@@ -45,8 +47,9 @@
       <van-checkbox
         v-model="checkAll"
         @click="checkBoxRef.toggleAll(checkAll)"
-        >全选</van-checkbox
       >
+        全选
+      </van-checkbox>
       <template #tip> 你的收货地址不支持配送, <span>修改地址</span> </template>
     </van-submit-bar>
   </div>
@@ -54,6 +57,7 @@
 
 <script setup lang="ts">
 import { useMainStore } from '@/store/mainStore'
+import { showToast } from 'vant'
 import { watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -67,7 +71,8 @@ const totalPrice = ref(0)
 watch(
   () => mainStore.$state.cartProductChecked,
   (val) => {
-    if (val.length === mainStore.$state.cartProductList.length) {
+    const listLength = mainStore.$state.cartProductList.length
+    if (val.length === listLength && listLength !== 0) {
       checkAll.value = true
     } else {
       checkAll.value = false
@@ -85,6 +90,11 @@ watch(
 )
 
 function onSubmit() {
+  if (mainStore.$state.cartProductChecked.length === 0) {
+    showToast('请至少选择一个商品！')
+    return
+  }
+
   router.push('/order/create')
 }
 </script>

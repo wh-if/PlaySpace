@@ -8,7 +8,7 @@ export interface Order {
   productItems: Record<string, any>[]
 }
 
-export function getOrder(orderId: string|number) {
+export function getOrder(orderId?: string | number) {
   return request({
     url: '/order',
     method: 'get',
@@ -43,6 +43,6 @@ export function payOrder(id: string) {
   return request({
     url: `/order/pay/${id}`,
     method: 'put',
-    data: { payFinish: true}
+    data: { payFinish: true },
   })
 }

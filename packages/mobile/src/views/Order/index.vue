@@ -94,6 +94,11 @@ const submitBarState = computed(() => {
         buttonText: '立即支付',
         buttonType: 'success' as ButtonType,
       }
+      case '1':
+      return {
+        buttonText: '',
+        buttonType: 'default' as ButtonType,
+      }
     default:
       return {
         buttonText: '提交订单',
@@ -117,8 +122,8 @@ function onSubmit() {
 
       router.replace(`/order/${res.data.orderId}`)
     })
-  } else if(orderData.value.status == 0) {
-    payOrder(orderData.value.id).then(res => {
+  } else if (orderData.value.status == 0) {
+    payOrder(orderData.value.id).then((res) => {
       // showToast(res.message)
     })
   }
