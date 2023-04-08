@@ -12,14 +12,12 @@ module.exports = [
       const { categoryId, productId } = ctx.query;
       if (!!productId) {
         ctx.body = AjaxResult.success(await productDao.get({ id: productId })) ;
-        return;
       }
       let queryValues = {};
       if (!!categoryId) {
         queryValues.categoryId = categoryId;
       }
       ctx.body = AjaxResult.success(await productDao.get({ categoryId }, false));
-
     },
   },
   {
