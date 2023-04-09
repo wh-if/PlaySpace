@@ -10,23 +10,23 @@ module.exports = [
     method: GET,
     handler: async (ctx) => {
       const { categoryId, productId } = ctx.query;
-      if (!!productId) {
-        ctx.body = AjaxResult.success(await productDao.get({ id: productId })) ;
+      if (productId) {
+        ctx.body = AjaxResult.success(await productDao.get({ id: productId }));
+      } else if (categoryId) {
+        ctx.body = AjaxResult.success(await productDao.get({ categoryId }, false));
+      } else {
+        ctx.body = AjaxResult.success(await productDao.get({}, false));
       }
-      let queryValues = {};
-      if (!!categoryId) {
-        queryValues.categoryId = categoryId;
-      }
-      ctx.body = AjaxResult.success(await productDao.get({ categoryId }, false));
+
     },
   },
-  {
-    path: "/product/:id",
-    method: GET,
-    handler: async (ctx) => {
-      ctx.body = AjaxResult.success(await productDao.get({ id: ctx.params.id }, false));
-    },
-  },
+  // {
+  //   path: "/product/:id",
+  //   method: GET,
+  //   handler: async (ctx) => {
+  //     ctx.body = AjaxResult.success(await productDao.get({ id: ctx.params.id }, false));
+  //   },
+  // },
   // 登录
   // {
   //   path: "/product",

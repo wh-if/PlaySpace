@@ -36,24 +36,34 @@
 </template>
 
 <script setup lang="ts">
-import { login } from '@/api/user';
+import { login } from '@/api/user'
+import { useMainStore } from '@/store/mainStore'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
 
 const username = ref('')
 const password = ref('')
+const mainStore = useMainStore()
+const router = useRouter()
 const onSubmit = (values: any) => {
-  login(values).then(res => {
-    
+  login(values).then((res) => {
+    if (res.data !== null) {
+      mainStore.$patch({
+        userInfo: res.data,
+      })
+      console.log(history.state);
+      
+      router.go(-1)
+    }
   })
 }
-
 </script>
 
 <style lang="scss" scoped>
-.title{
+.title {
   text-align: center;
   padding: 20px 0;
-  font-family: "Chiller";
+  font-family: 'Chiller';
   font-size: 3rem;
 }
 </style>

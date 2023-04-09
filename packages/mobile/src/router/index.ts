@@ -1,3 +1,5 @@
+import { useMainStore } from '@/store/mainStore'
+import { showConfirmDialog } from 'vant'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -30,11 +32,17 @@ const routes: RouteRecordRaw[] = [
         path: '/order',
         name: 'orderList',
         component: () => import('@/views/OrderList/index.vue'),
+        meta: {
+          needLogin: true,
+        },
       },
       {
         path: '/order/:id',
         name: 'order',
         component: () => import('@/views/Order/index.vue'),
+        meta: {
+          needLogin: true,
+        },
       },
       {
         path: '/me',
@@ -45,6 +53,9 @@ const routes: RouteRecordRaw[] = [
         path: '/message',
         name: 'message',
         component: () => import('@/views/Message/index.vue'),
+        meta: {
+          needLogin: true,
+        },
       },
     ],
   },
@@ -55,7 +66,30 @@ const routes: RouteRecordRaw[] = [
   },
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  const mainStore = useMainStore()
+  if (to.meta.needLogin && (!mainStore.userInfo?.accountNumber)) {
+
+    showConfirmDialog({
+      message: '请先登录',
+      theme: 'round-button',
+    })
+      .then(() => {
+        router.push('/login')
+        // next()
+      })
+      .catch(() => {
+        // router.back()
+      })
+  } else {
+    next()
+  }
+  
+})
+
+export default router

@@ -17,10 +17,15 @@ module.exports = [
     path: "/login",
     method: POST,
     handler: async (ctx) => {
+      console.log(ctx.request.body);
       const { accountNumber, password } = ctx.request.body;
       const user = await userDao.get({ accountNumber });
+
+
       if (password === user.password) {
-        ctx.body = AjaxResult.success("登录成功！", null)
+        Reflect.deleteProperty(user, 'id')
+        Reflect.deleteProperty(user, 'password')
+        ctx.body = AjaxResult.success("登录成功！", user)
       } else {
         ctx.body = AjaxResult.error("用户名或密码错误！")
       }
@@ -40,7 +45,7 @@ module.exports = [
     method: GET,
     handler: async (ctx) => {
       const { userId } = ctx.query;
-      const resultList = await addressDao.get({ userId },false);
+      const resultList = await addressDao.get({ userId }, false);
       ctx.body = AjaxResult.success(resultList);
     },
   },

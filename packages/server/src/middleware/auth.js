@@ -1,5 +1,5 @@
 exports.auth = () => {
-  const whiteList = ['/login', '/register'];
+  const whiteList = ['/login', '/register','/banner', '/static', '/product', '/category', '/address'];
   return async (ctx, next) => {
     const findIndex = whiteList.findIndex(item => ctx.path.startsWith(item))
     if (findIndex === -1) {

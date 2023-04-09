@@ -38,8 +38,9 @@
         :price="item.buyOptions[0].discountPrice"
         :desc="item.description"
         :title="item.name"
-        :thumb="'/api' + item.poster[Math.floor(Math.random()*4) ]"
+        :thumb="`/api${item.poster[Math.floor(Math.random() * 4)]}`"
         :origin-price="item.buyOptions[0].price"
+        @click="handleViewProduct(item.id)"
       />
     </van-list>
   </div>
@@ -48,7 +49,9 @@
 <script setup lang="ts">
 import { getCategory, getProduct } from '@/api/product'
 import { ref, shallowReactive, watch } from 'vue'
+import { useRouter } from 'vue-router';
 const active = ref(0)
+const router   = useRouter()
 
 const state = shallowReactive<Record<string, any>>({
   categoryList: [],
@@ -60,7 +63,7 @@ getCategory().then((res) => {
   let result: any[] = []
   if (Array.isArray(res)) {
     res.forEach((item) => {
-      if (!!item.children) {
+      if (item.children) {
         item.children[0].withTitle = item.name
         item.children.forEach((i: any) => {
           result.push(i)
@@ -74,6 +77,10 @@ getCategory().then((res) => {
   state.categoryList = result
 })
 
+function handleViewProduct(id:number|string) {
+  router.push('/product/'+id)
+}
+
 watch(
   active,
   (newVal) => {
@@ -85,7 +92,7 @@ watch(
     }
 
     getProduct(queryParams).then((res) => {
-      state.productList = res
+      state.productList = res.data
     })
   },
   {

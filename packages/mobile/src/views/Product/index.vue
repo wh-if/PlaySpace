@@ -59,6 +59,7 @@
     <div class="content box">
       <img
         v-for="item in state.productData.content"
+        :key="item"
         :src="item"
         :alt="item"
       />
@@ -142,7 +143,7 @@ const mainStore = useMainStore()
 const currentProduct = computed(() => {
   const buyOptions = state.productData.buyOptions
 
-  if (!!buyOptions) {
+  if (buyOptions) {
     return {
       price: buyOptions[state.activeBuyOption].price,
       discountPrice: buyOptions[state.activeBuyOption].discountPrice,
@@ -198,16 +199,20 @@ function handleChooseComplete(data: any) {
 }
 
 watch(
-  () => router.currentRoute.value.params.id,
+  router.currentRoute,
   (val) => {
-    if (typeof val === 'string') {
-      getProductData(parseInt(val))
+    if (typeof val.params.id === 'string') {
+      if (!isNaN(parseInt(val.params.id))) {
+        getProductData(parseInt(val.params.id))
+      }
+      
     }
   },
   {
     immediate: true,
   }
 )
+
 </script>
 
 <style lang="scss" scoped>

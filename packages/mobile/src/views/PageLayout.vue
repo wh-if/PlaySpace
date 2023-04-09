@@ -5,6 +5,7 @@
         title="WHIF"
         left-text="返回"
         left-arrow
+        @click-left="onClickLeft"
       >
         <template #right>
           <VanIcon
@@ -25,6 +26,10 @@ import { useRouter } from 'vue-router'
 
 const currentTab = ref('home')
 const router = useRouter()
+
+function onClickLeft() {
+  router.back()
+}
 </script>
 
 <style lang="scss" scoped></style>
