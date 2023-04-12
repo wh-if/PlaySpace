@@ -1,4 +1,4 @@
-const { select, insert, update, remove } = require("./index");
+const { select, insert, update, remove, query } = require("./index");
 
 class ProductDao {
   TABLE_NAME = 'product';

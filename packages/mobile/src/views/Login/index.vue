@@ -51,6 +51,7 @@ const onSubmit = (values: any) => {
       mainStore.$patch({
         userInfo: res.data,
       })
+      sessionStorage.setItem('token', res.data.token);
       console.log(history.state);
       
       router.go(-1)

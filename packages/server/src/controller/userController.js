@@ -1,4 +1,5 @@
 const { HttpMethodEnum: { GET, POST, PUT, DELETE } } = require("koa-body");
+const jwt = require('jsonwebtoken')
 const userDao = require("../dao/userDao");
 const addressDao = require("../dao/addressDao");
 const AjaxResult = require("../util/AjaxResult");
@@ -17,7 +18,6 @@ module.exports = [
     path: "/login",
     method: POST,
     handler: async (ctx) => {
-      console.log(ctx.request.body);
       const { accountNumber, password } = ctx.request.body;
       const user = await userDao.get({ accountNumber });
 
@@ -25,7 +25,8 @@ module.exports = [
       if (password === user.password) {
         Reflect.deleteProperty(user, 'id')
         Reflect.deleteProperty(user, 'password')
-        ctx.body = AjaxResult.success("登录成功！", user)
+        const token = jwt.sign({ ...user }, 'vshop')
+        ctx.body = AjaxResult.success("登录成功！", { ...user, token })
       } else {
         ctx.body = AjaxResult.error("用户名或密码错误！")
       }

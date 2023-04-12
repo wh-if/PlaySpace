@@ -10,7 +10,7 @@ type AjaxResult = {
   message: string
   code: 0 | 1
   data: Record<string, any>
-}& AxiosResponse
+} & AxiosResponse
 
 const service: AxiosInstance = axios.create({
   baseURL: '/api',
@@ -19,6 +19,10 @@ const service: AxiosInstance = axios.create({
 
 service.interceptors.request.use(
   (config) => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      config.headers.token = token;
+    }
     return config
   },
   (error: AxiosError) => {

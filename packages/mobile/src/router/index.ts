@@ -57,6 +57,11 @@ const routes: RouteRecordRaw[] = [
           needLogin: true,
         },
       },
+      {
+        path: '/search',
+        name: 'search',
+        component: () => import('@/views/Search/index.vue'),
+      },
     ],
   },
   {
