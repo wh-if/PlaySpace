@@ -3,7 +3,20 @@ const { select, insert, update, remove, query } = require("./index");
 class ProductDao {
   TABLE_NAME = 'product';
   get = async (whereValues, one = true) => {
-    const results = await select(this.TABLE_NAME, whereValues);
+    let results;
+    if (whereValues?.searchKeyWord) {
+      results = await new Promise((resolve, reject) => {
+        query(`select * from ${this.TABLE_NAME} where \`name\` like \'%${whereValues.searchKeyWord}%\' or description like \'%${whereValues.searchKeyWord}%\'`, (error, res) => {
+          if (error) {
+            throw error;
+          }
+          resolve(res)
+        })
+      })
+    } else {
+      results = await select(this.TABLE_NAME, whereValues);
+    }
+
     results.forEach(item => {
       item.tag = JSON.parse(item.tag);
       item.content = JSON.parse(item.content);

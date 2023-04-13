@@ -9,13 +9,13 @@ module.exports = [
     path: "/product",
     method: GET,
     handler: async (ctx) => {
-      const { categoryId, productId } = ctx.query;
+      const { categoryId, productId, searchKeyWord = "" } = ctx.query;
       if (productId) {
         ctx.body = AjaxResult.success(await productDao.get({ id: productId }));
       } else if (categoryId) {
         ctx.body = AjaxResult.success(await productDao.get({ categoryId }, false));
       } else {
-        ctx.body = AjaxResult.success(await productDao.get({}, false));
+        ctx.body = AjaxResult.success(await productDao.get({ searchKeyWord }, false));
       }
 
     },

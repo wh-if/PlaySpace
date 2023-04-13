@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const AjaxResult = require('../util/AjaxResult');
 
 exports.auth = () => {
-  const whiteList = ['/login', '/register', 'banner', '/static', '/product', '/category', '/address'];
+  const whiteList = ['/login', '/register', '/banner', '/static', '/product', '/category', '/address'];
   return async (ctx, next) => {
     const findIndex = whiteList.findIndex(item => ctx.path.startsWith(item))
     if (findIndex === -1) {

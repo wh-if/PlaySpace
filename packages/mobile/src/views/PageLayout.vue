@@ -11,6 +11,7 @@
           <VanIcon
             name="search"
             size="18"
+            @click="$router.push('/search')"
           />
         </template>
       </VanNavBar>

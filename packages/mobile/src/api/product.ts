@@ -2,7 +2,8 @@ import request from '@/utils/request'
 
 type GetProductProps = {
   categoryId?: number
-  productId?: number
+  productId?: number,
+  searchKeyWord?: string
 }
 
 export function getProduct(params: GetProductProps = {}) {
