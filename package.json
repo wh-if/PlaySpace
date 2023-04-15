@@ -4,16 +4,14 @@
   "description": "",
   "packageManager": "pnpm@7.26.3",
   "scripts": {
-    "server": "npm run dev --workspace=server",
-    "admin": "npm run dev --workspace=admin",
-    "mobile": "npm run dev --workspace=mobile",
+    "server": "pnpm run dev --workspace=server",
+    "mobile": "pnpm run dev --workspace=mobile",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "workspaces": [
     "packages\\mobile",
-    "packages\\admin",
     "packages\\server"
   ],
   "dependencies": {
