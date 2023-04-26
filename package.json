@@ -2,17 +2,17 @@
   "name": "vshop",
   "version": "0.0.1",
   "description": "",
-  "packageManager": "pnpm@7.26.3",
+  "packageManager": "pnpm@8.3.1",
   "scripts": {
-    "server": "pnpm run dev --workspace=server",
-    "mobile": "pnpm run dev --workspace=mobile",
+    "admin": "pnpm -C ./packages/admin dev",
+    "mobile": "pnpm -C ./packages/mobile dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "workspaces": [
     "packages\\mobile",
-    "packages\\server"
+    "packages\\admin"
   ],
   "dependencies": {
     "lodash-es": "^4.17.21"
